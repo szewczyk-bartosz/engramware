@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #f4edea;
+      --bg-secondary: #e6e1c5;
+      --text-primary: #1a1a1a;
+      --text-muted: #555555;
+      --border: #2d1b4a;
+      --accent: #8e8dbe;
+      --code-bg: #e6e1c5;
+      --font-display: "Raleway", sans-serif;
+      --font-body: "Source Sans 3", sans-serif;
+    }
+
+    /* @media (prefers-color-scheme: dark) { */
+    /*   :root { */
+    /*     --bg-primary: #1a1219; */
+    /*     --bg-secondary: #2d1b4a; */
+    /*     --text-primary: #f4edea; */
+    /*     --text-muted: #a89fbc; */
+    /*     --border: #8e8dbe; */
+    /*     --accent: #8e8dbe; */
+    /*     --code-bg: #3d2b5a; */
+    /*   } */
+    /* } */
+    /**/
+    [data-theme="light"] {
+      --bg-primary: #f4edea;
+      --bg-secondary: #e6e1c5;
+      --text-primary: #1a1a1a;
+      --text-muted: #555555;
+      --border: #2d1b4a;
+      --accent: #8e8dbe;
+      --code-bg: #e6e1c5;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #1a1219;
+      --bg-secondary: #2d1b4a;
+      --text-primary: #f4edea;
+      --text-muted: #a89fbc;
+      --border: #8e8dbe;
+      --accent: #8e8dbe;
+      --code-bg: #3d2b5a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 13pt;
+      font-family: var(--font-body);
+      width: 210mm;
+      min-height: 297mm;
+      max-height: 297mm;
+      margin: 0 auto;
+    }
+
+    .page-break {
+      page-break-after: always;
+    }
+
+    h1, h2 {
+      font-family: var(--font-display);
+      border-bottom: solid 2px var(--border);
+      margin-bottom: 5px;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    .title-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .title-page h1 {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 16px;
+      border: none;
+    }
+
+    .meta {
+      font-size: 1.5em;
+      margin-top: 8px;
+      color: var(--text-muted);
+    }
+
+    .toc-container {
+        padding: 1rem 0;
+        margin-bottom: 5vh;
+    }
+
+    .toc {
+      display: flex;
+      font-size: 1em;
+      align-items: baseline;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .toc-title {
+      white-space: nowrap;
+    }
+
+    .toc-dots {
+      flex: 1;
+      border-bottom: 2px dotted var(--text-muted);
+      margin: 0 6px 3px 6px;
+    }
+
+    .toc-page {
+      white-space: nowrap;
+    }
+
+    figure {
+      margin: 24px 0;
+    }
+
+    figure table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11pt;
+    }
+
+    figure table th {
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      border: 1px solid var(--text-primary);
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    figure table td {
+      padding: 10px 14px;
+      border: 1px solid var(--text-primary);
+      vertical-align: top;
+    }
+
+    figcaption {
+      font-size: 10pt;
+      font-style: italic;
+      margin-top: 8px;
+      color: var(--text-muted);
+    }
+
+    figure img {
+      max-width: 100%;
+      display: block;
+    }
+
+    code {
+      font-family: monospace;
+      background: var(--code-bg);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      padding: 1rem;
+      overflow-x: auto;
+      font-size: 0.9em;
+      margin-bottom: 20px;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding-left: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    @page {
+      margin: 20mm;
+      size: A4;
+      @bottom-center {
+        content: counter(page);
+        font-family: var(--font-body);
+      }
+    }
+
+    @media print {
+      body {
+        width: 210mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body><div class='title-page'><h1>Lorem Ipsum: Lorem</h1><div class='meta'>Author: Bartosz Szewczyk</div><div class='meta'>Candidate Number: lorem</div></div>
+<div class='page-break'></div>
+<div class='toc-container'><div class='toc'><span class='toc-title'>lorem</span>
+<span class='toc-dots'></span>
+<span class='toc-page'>0</span></div><div class='toc'><span class='toc-title'>ipsum</span>
+<span class='toc-dots'></span>
+<span class='toc-page'>0</span></div><div class='toc'><span class='toc-title'>dolor</span>
+<span class='toc-dots'></span>
+<span class='toc-page'>0</span></div><div class='toc'><span class='toc-title'>amet</span>
+<span class='toc-dots'></span>
+<span class='toc-page'>0</span></div></div>
+<div class='page-break'></div>
+<h2>Dolor Amet</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat leo et vehicula congue Mauris ex ipsum, pulvinar in maximus vel, sollicitudin eu purus. Duis molestie imperdiet blandit. Pellentesque aliquet, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat leo et vehicula congue Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat leo et vehicula congue Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat leo et vehicula congue Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat leo et vehicula congue Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat leo et vehicula congue Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat leo et vehicula congue Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consequat leo et vehicula congue Mauris ex ipsum, pulvinar in maximus vel, sollicitudin eu purus. Duis molestie imperdiet blandit. Pellentesque aliquet, Mauris ex ipsum, pulvinar in maximus vel, sollicitudin eu purus. Duis molestie imperdiet blandit. Pellentesque aliquet, Mauris ex ipsum, pulvinar in maximus vel, sollicitudin eu purus. Duis molestie imperdiet blandit. Pellentesque aliquet, Mauris ex ipsum, pulvinar in maximus vel, sollicitudin eu purus. Duis molestie imperdiet blandit. Pellentesque aliquet, Mauris ex ipsum, pulvinar in maximus vel, sollicitudin eu purus. Duis molestie imperdiet blandit. Pellentesque aliquet, Mauris ex ipsum, pulvinar in maximus vel, sollicitudin eu purus. Duis molestie imperdiet blandit. Pellentesque aliquet, Mauris ex ipsum, pulvinar in maximus vel, sollicitudin eu purus. Duis molestie imperdiet blandit. Pellentesque aliquet,</p>
+<div class='page-break'></div>
+<figure><table><thead><tr><th>head1</th><th>head2</th></tr></thead><tbody><tr><td>datahere</td><td>datahere</td></tr><tr><td>datahere</td><td>datahere</td></tr><tr><td>datahere</td><td>datahere</td></tr><tr><td>datahere</td><td>datahere</td></tr></tbody></table><figcaption>Table description here</figcaption></figure>
+<div class='page-break'></div>
+<h2>Appendix</h2>
+<p>Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text Some random text</p>
+<figure><img src='random-screenshot.jpg' alt=''><figcaption>Image description here</figcaption></figure></body></html>
