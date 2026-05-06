@@ -1,36 +1,9 @@
-def parse(text: str):
-    blocks: list[tuple[str, list[str]]] = []
-    current: str | None = None
-    lines: list[str] = []
-
-    for index, line in enumerate(text.split("\n")):
-        line = line.strip()
-        print(f"{line=}\n{current=}")
-        if line.startswith("[") and line.endswith("]"):
-            if current is not None:
-                blocks.append((current, lines))
-            current = line[1:-1]
-            lines = []
-        else:
-            if line:
-                if not current:
-                    raise ValueError(f"Orphaned content found at {index}")
-                else:
-                    lines.append(line)
-
-    if current is not None:
-        blocks.append((current, lines))
-    return blocks
-
-
-def formattedText(text: str) -> str:
-    return text
+from bmd.parser import Block
 
 
 def render_toc(lines: list[str]) -> str:
     output = "<div class='toc-container'>"
     for line in lines:
-        print(repr(line))
         title, page = line.split(",")
         output += "<div class='toc'>"
         output += f"<span class='toc-title'>{formattedText(title)}</span>\n"
@@ -111,20 +84,17 @@ RENDERERS = {
 }
 
 
-def render(blocks: list[tuple[str, list[str]]]) -> str:
+def formattedText(text: str) -> str:
+    return text
+
+
+def render(blocks: list[Block]) -> str:
     output: list[str] = []
     with open("header.html", "r") as header:
         HEADER = header.read()
-    for block_type, lines in blocks:
-        if block_type not in RENDERERS:
-            raise ValueError(f"Unkown block type: {block_type}")
-        output.append(RENDERERS[block_type](lines))
+    for block in blocks:
+        if block.type not in RENDERERS:
+            raise ValueError(f"Unkown block type: {block.type}")
+        output.append(RENDERERS[block.type](block.lines))
 
     return f"{HEADER}<body>{'\n'.join(output)}</body></html>"
-
-
-if __name__ == "__main__":
-    with open("test.bmd", "r") as file:
-        blocks = parse(file.read())
-        with open("output.html", "w") as output:
-            _ = output.write(render(blocks))
