@@ -116,7 +116,7 @@ def render(blocks: list[tuple[str, list[str]]]) -> str:
     with open("header.html", "r") as header:
         HEADER = header.read()
     for block_type, lines in blocks:
-        if block_type no in RENDERERS:
+        if block_type not in RENDERERS:
             raise ValueError(f"Unkown block type: {block_type}")
         output.append(RENDERERS[block_type](lines))
 
