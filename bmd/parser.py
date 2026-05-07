@@ -22,7 +22,7 @@ def parse(text: str) -> list[Block]:
         else:
             if not line:
                 continue
-            if not current:
+            if current is None:
                 raise ValueError(f"Orphaned content found at {index}")
             lines.append(line)
 

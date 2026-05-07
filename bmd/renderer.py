@@ -24,6 +24,7 @@ def render_p(lines: list[str]) -> str:
 
 def render_intro(lines: list[str]) -> str:
     title = lines[0]
+    return f"<h1>{title}</h1>"
     meta = "".join(f"<div class='meta'>{line}</div>" for line in lines[1:] if line)
     return f"<div class='title-page'><h1>{title}</h1>{meta}</div>"
 
@@ -57,6 +58,33 @@ def render_table(lines: list[str]) -> str:
     )
 
 
+def render_table_bare(lines: list[str]) -> str:
+    rows: list[list[str]] = []
+    current_row: list[str] = []
+    for line in lines:
+        if line == "---":
+            if current_row:
+                rows.append(current_row)
+            current_row = []
+        else:
+            current_row.append(line)
+    if current_row:
+        rows.append(current_row)
+    header = "".join(f"<th>{cell}</th>" for cell in rows[0])
+    body = "".join(
+        "<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>"
+        for row in rows[1:]
+    )
+    return (
+        f"<figure>"
+        f"<table>"
+        f"<thead><tr>{header}</tr></thead>"
+        f"<tbody>{body}</tbody>"
+        f"</table>"
+        f"</figure>"
+    )
+
+
 def render_img(lines: list[str]) -> str:
     src = lines[0]
     caption = lines[1] if len(lines) > 1 else ""
@@ -73,6 +101,14 @@ def render_pagebreak(_lines: list[str]) -> str:
     return "<div class='page-break'></div>"
 
 
+def render_math(_lines: list[str]) -> str:
+    return "<p>MATH UNSUPPORTED</p>"
+
+
+def render_code(_lines: list[str]) -> str:
+    return "<p>CODE UNSUPPORTED</p>"
+
+
 RENDERERS = {
     "intro": render_intro,
     "toc": render_toc,
@@ -81,11 +117,23 @@ RENDERERS = {
     "table": render_table,
     "img": render_img,
     "page-break": render_pagebreak,
+    "math": render_math,
+    "code": render_code,
 }
 
 
 def formattedText(text: str) -> str:
     return text
+
+
+def render_engram(blocks: list[Block]) -> str:
+    output: list[str] = []
+    for block in blocks:
+        if block.type not in RENDERERS:
+            raise ValueError(f"Unkown block type: {block.type}")
+        output.append(RENDERERS[block.type](block.lines))
+
+    return f"<div class='engram-doc'>{'\n'.join(output)}</div>"
 
 
 def render(blocks: list[Block]) -> str:

@@ -1,0 +1,57 @@
+[intro]
+File 02 — Spectral Decomposition
+
+[p]
+The **spectral theorem** is one of those ideas that keeps showing up — every time you think you've moved past it, it reappears wearing a slightly different hat. The core claim is simple enough: a real symmetric matrix can be diagonalised by an orthogonal matrix, and the diagonal it produces is its spectrum.
+
+[p]
+What's interesting isn't the statement, it's the shape of the proof. You build it out of two facts that don't obviously fit together — that symmetric operators have real eigenvalues, and that eigenvectors for distinct eigenvalues are orthogonal. The proof is the gluing.
+
+[header]
+Setup
+
+[p]
+Let $A \in \mathbb{R}^{n \times n}$ with $A^\top = A$. We want to find an orthogonal $Q$ and diagonal $D$ such that:
+
+[math]
+A = QDQ^\top, \quad \text{where } Q^\top Q = I
+
+[p]
+The columns of `Q` are an orthonormal basis of eigenvectors. Read this aloud once or twice — it's the whole punchline.
+
+[header]
+Why symmetry matters
+
+[p]
+Symmetry forces eigenvalues to be real. The proof is one line if you're willing to take the inner product on faith:
+
+[math]
+\langle Av, v \rangle = \langle v, Av \rangle \implies \lambda \|v\|^2 = \bar{\lambda} \|v\|^2
+
+[p]
+So $\lambda = \bar{\lambda}$, which means $\lambda \in \mathbb{R}$. The same trick proves eigenvector orthogonality for distinct eigenvalues.
+
+[code]
+fn spectral_decompose(a: Matrix) -> (Matrix, Matrix) {
+    let eigen = a.symmetric_eigen();
+    (eigen.eigenvectors, Matrix::diagonal(&eigen.eigenvalues))
+}
+
+[p]
+That's the whole API surface for a reasonable numerical implementation — the hard work is in `symmetric_eigen`, which is somebody else's problem.
+
+[table]
+my
+will
+to
+live 
+---
+is
+steadily
+declining
+as
+--- 
+I 
+am 
+writing 
+this
