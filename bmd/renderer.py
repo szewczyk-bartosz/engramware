@@ -1,5 +1,7 @@
+from pathlib import Path
 from bmd.parser import Block
 
+_HEADER_PATH = Path(__file__).parent.parent / "header.html"
 
 def render_toc(lines: list[str]) -> str:
     output = "<div class='toc-container'>"
@@ -138,7 +140,7 @@ def render_engram(blocks: list[Block]) -> str:
 
 def render(blocks: list[Block]) -> str:
     output: list[str] = []
-    with open("header.html", "r") as header:
+    with open(_HEADER_PATH, "r") as header:
         HEADER = header.read()
     for block in blocks:
         if block.type not in RENDERERS:
