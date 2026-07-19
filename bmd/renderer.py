@@ -1,4 +1,5 @@
 from pathlib import Path
+import html
 from bmd.parser import Block
 
 _HEADER_PATH = Path(__file__).parent.parent / "header.html"
@@ -125,7 +126,7 @@ RENDERERS = {
 
 
 def formattedText(text: str) -> str:
-    return text
+    return html.escape(text);
 
 
 def render_engram(blocks: list[Block]) -> str:
