@@ -1,5 +1,4 @@
 import argparse
-from tabnanny import check
 
 import bmd.parser
 import bmd.pipeline
