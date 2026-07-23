@@ -32,36 +32,7 @@ def render_intro(lines: list[str]) -> str:
     return f"<div class='title-page'><h1>{title}</h1>{meta}</div>"
 
 
-def render_table(lines: list[str]) -> str:
-    caption = lines[0]
-    rows: list[list[str]] = []
-    current_row: list[str] = []
-    for line in lines[1:]:
-        if line == "---":
-            if current_row:
-                rows.append(current_row)
-            current_row = []
-        else:
-            current_row.append(line)
-    if current_row:
-        rows.append(current_row)
-    header = "".join(f"<th>{cell}</th>" for cell in rows[0])
-    body = "".join(
-        "<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>"
-        for row in rows[1:]
-    )
-    return (
-        f"<figure>"
-        f"<table>"
-        f"<thead><tr>{header}</tr></thead>"
-        f"<tbody>{body}</tbody>"
-        f"</table>"
-        f"<figcaption>{caption}</figcaption>"
-        f"</figure>"
-    )
-
-
-def render_table_bare(lines: list[str]) -> str:
+def _render_table_html(lines: list[str]) -> str:
     rows: list[list[str]] = []
     current_row: list[str] = []
     for line in lines:
@@ -73,25 +44,43 @@ def render_table_bare(lines: list[str]) -> str:
             current_row.append(line)
     if current_row:
         rows.append(current_row)
-    header = "".join(f"<th>{cell}</th>" for cell in rows[0])
+    header = "".join(f"<th>{formattedText(cell)}</th>" for cell in rows[0])
     body = "".join(
-        "<tr>" + "".join(f"<td>{cell}</td>" for cell in row) + "</tr>"
+        "<tr>" + "".join(f"<td>{formattedText(cell)}</td>" for cell in row) + "</tr>"
         for row in rows[1:]
     )
     return (
-        f"<figure>"
         f"<table>"
         f"<thead><tr>{header}</tr></thead>"
         f"<tbody>{body}</tbody>"
         f"</table>"
+    )
+
+
+def render_table(lines: list[str]) -> str:
+    caption = lines[0]
+    table_html = _render_table_html(lines[1:])
+    return (
+        f"<figure>"
+        f"{table_html}"
+        f"<figcaption>{formattedText(caption)}</figcaption>"
+        f"</figure>"
+    )
+
+
+def render_table_bare(lines: list[str]) -> str:
+    table_html = _render_table_html(lines)
+    return (
+        f"<figure>"
+        f"{table_html}"
         f"</figure>"
     )
 
 
 def render_img(lines: list[str]) -> str:
-    src = lines[0]
-    caption = lines[1] if len(lines) > 1 else ""
-    alt = lines[2] if len(lines) > 2 else ""
+    src = formattedText(lines[0])
+    caption = formattedText(lines[1]) if len(lines) > 1 else ""
+    alt = formattedText(lines[2]) if len(lines) > 2 else ""
     return (
         f"<figure>"
         f"<img src='{src}' alt='{alt}'>"
