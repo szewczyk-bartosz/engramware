@@ -7,7 +7,10 @@ _HEADER_PATH = Path(__file__).parent.parent / "header.html"
 def render_toc(lines: list[str]) -> str:
     output = "<div class='toc-container'>"
     for line in lines:
-        title, page = line.split(",")
+        if "," not in line:
+            raise ValueError(f"toc line must be 'title, page': {line!r}")
+        title, page = line.rsplit(",", 1)
+        title, page = title.strip(), page.strip()
         output += "<div class='toc'>"
         output += f"<span class='toc-title'>{formattedText(title)}</span>\n"
         output += f"<span class='toc-dots'></span>\n"
@@ -44,6 +47,11 @@ def _render_table_html(lines: list[str]) -> str:
             current_row.append(line)
     if current_row:
         rows.append(current_row)
+    if not rows:
+        raise ValueError("table block requires at least one row of data")
+    col_count = len(rows[0])
+    if any(len(row) != col_count for row in rows[1:]):
+        raise ValueError("table block requires an equal number of columns in each row")
     header = "".join(f"<th>{formattedText(cell)}</th>" for cell in rows[0])
     body = "".join(
         "<tr>" + "".join(f"<td>{formattedText(cell)}</td>" for cell in row) + "</tr>"
@@ -58,6 +66,8 @@ def _render_table_html(lines: list[str]) -> str:
 
 
 def render_table(lines: list[str]) -> str:
+    if not lines:
+        raise ValueError("table block requires a caption")
     caption = lines[0]
     table_html = _render_table_html(lines[1:])
     return (
@@ -78,6 +88,8 @@ def render_table_bare(lines: list[str]) -> str:
 
 
 def render_img(lines: list[str]) -> str:
+    if not lines:
+        raise ValueError("img block requires at least one line (the image path)")
     src = formattedText(lines[0])
     caption = formattedText(lines[1]) if len(lines) > 1 else ""
     alt = formattedText(lines[2]) if len(lines) > 2 else ""
