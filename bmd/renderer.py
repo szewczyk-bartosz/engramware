@@ -112,13 +112,18 @@ def render_math(_lines: list[str]) -> str:
 def render_code(_lines: list[str]) -> str:
     return "<p>CODE UNSUPPORTED</p>"
 
+def render_ul(lines: list[str]) -> str:
+    return f"<ul>{"".join([f"<li>{i}</li>" for i in lines])}</ul>"
+
 
 RENDERERS = {
     "intro": render_intro,
     "toc": render_toc,
+    "ul": render_ul,
     "header": render_header,
     "p": render_p,
     "table": render_table,
+    "table_bare": render_table_bare,
     "img": render_img,
     "page-break": render_pagebreak,
     "math": render_math,
