@@ -4,6 +4,20 @@ from bmd.parser import Block
 
 _HEADER_PATH = Path(__file__).parent.parent / "header.html"
 
+import functools
+
+def strip_lines(fn):
+    @functools.wraps(fn)
+    def wrapper(lines):
+        return fn([line.strip() for line in lines])
+    return wrapper
+
+def remove_empty_lines(fn):
+    @functools.wraps(fn)
+    def wrapper(lines):
+        return fn([line for line in lines if line.strip()])
+    return wrapper
+
 def render_toc(lines: list[str]) -> str:
     output = "<div class='toc-container'>"
     for line in lines:

@@ -13,15 +13,12 @@ def parse(text: str) -> list[Block]:
     lines: list[str] = []
 
     for index, line in enumerate(text.split("\n")):
-        line = line.strip()
         if line.startswith("[") and line.endswith("]"):
             if current is not None:
                 blocks.append(Block(current, lines))
             current = line[1:-1]
             lines = []
         else:
-            if not line:
-                continue
             if current is None:
                 raise ValueError(f"Orphaned content found at {index}")
             lines.append(line)
