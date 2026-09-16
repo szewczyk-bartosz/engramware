@@ -18,6 +18,9 @@ def remove_empty_lines(fn):
         return fn([line for line in lines if line.strip()])
     return wrapper
 
+
+@strip_lines
+@remove_empty_lines
 def render_toc(lines: list[str]) -> str:
     output = "<div class='toc-container'>"
     for line in lines:
@@ -34,14 +37,20 @@ def render_toc(lines: list[str]) -> str:
     return output
 
 
+@strip_lines
+@remove_empty_lines
 def render_header(lines: list[str]) -> str:
     return f"<h2>{formattedText(".".join(lines))}</h2>"
 
 
+@strip_lines
+@remove_empty_lines
 def render_p(lines: list[str]) -> str:
     return f"<p>{formattedText(" ".join(lines))}</p>"
 
 
+@strip_lines
+@remove_empty_lines
 def render_intro(lines: list[str]) -> str:
     title = lines[0]
     return f"<h1>{title}</h1>"
@@ -79,6 +88,8 @@ def _render_table_html(lines: list[str]) -> str:
     )
 
 
+@strip_lines
+@remove_empty_lines
 def render_table(lines: list[str]) -> str:
     if not lines:
         raise ValueError("table block requires a caption")
@@ -92,6 +103,8 @@ def render_table(lines: list[str]) -> str:
     )
 
 
+@strip_lines
+@remove_empty_lines
 def render_table_bare(lines: list[str]) -> str:
     table_html = _render_table_html(lines)
     return (
@@ -101,6 +114,8 @@ def render_table_bare(lines: list[str]) -> str:
     )
 
 
+@strip_lines
+@remove_empty_lines
 def render_img(lines: list[str]) -> str:
     if not lines:
         raise ValueError("img block requires at least one line (the image path)")
@@ -115,17 +130,26 @@ def render_img(lines: list[str]) -> str:
     )
 
 
+@strip_lines
+@remove_empty_lines
 def render_pagebreak(_lines: list[str]) -> str:
     return "<div class='page-break'></div>"
 
 
+@strip_lines
+@remove_empty_lines
 def render_math(_lines: list[str]) -> str:
     return "<p>MATH UNSUPPORTED</p>"
 
 
-def render_code(_lines: list[str]) -> str:
-    return "<p>CODE UNSUPPORTED</p>"
+def render_code(lines: list[str]) -> str:
+    language = lines[0].strip()
+    innerHTML = "\n".join([formattedText(i) for i in lines[1:]])
+    return f"<pre><code class='language-{language}'>{innerHTML}</code></pre>"
+        
 
+@strip_lines
+@remove_empty_lines
 def render_ul(lines: list[str]) -> str:
     return f"<ul>{"".join([f"<li>{i}</li>" for i in lines])}</ul>"
 
