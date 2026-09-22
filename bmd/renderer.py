@@ -139,7 +139,7 @@ def render_pagebreak(_lines: list[str]) -> str:
 @strip_lines
 @remove_empty_lines
 def render_math(lines: list[str]) -> str:
-    return f"<div class='math-block' data-latex='{formattedText(" ".join(lines))}></div>"
+    return f"<div class='math-block' data-latex='{formattedText(" ".join(lines))}'></div>"
 
 
 def render_code(lines: list[str]) -> str:
