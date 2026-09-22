@@ -180,7 +180,7 @@ def render_engram(blocks: list[Block]) -> str:
             raise ValueError(f"Unkown block type: {block.type}")
         output.append(RENDERERS[block.type](block.lines))
 
-    return f"<div class='engram-doc'>{'\n'.join(output)}</div>"
+    return f"{'\n'.join(output)}"
 
 
 def render(blocks: list[Block]) -> str:
