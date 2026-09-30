@@ -155,6 +155,9 @@ def render_code(lines: list[str]) -> str:
 def render_ul(lines: list[str]) -> str:
     return f"<ul>{"".join([f"<li>{i}</li>" for i in lines])}</ul>"
 
+
+@strip_lines
+@remove_empty_lines
 def render_checklist(lines: list[str]) -> str:
     items = "".join(
         f'<li><input type="checkbox" disabled {"checked" if int(line[0]) else ""}>{line[1:]}</li>'
