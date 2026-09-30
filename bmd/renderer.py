@@ -6,16 +6,20 @@ _HEADER_PATH = Path(__file__).parent.parent / "header.html"
 
 import functools
 
+
 def strip_lines(fn):
     @functools.wraps(fn)
     def wrapper(lines):
         return fn([line.strip() for line in lines])
+
     return wrapper
+
 
 def remove_empty_lines(fn):
     @functools.wraps(fn)
     def wrapper(lines):
         return fn([line for line in lines if line.strip()])
+
     return wrapper
 
 
@@ -107,11 +111,7 @@ def render_table(lines: list[str]) -> str:
 @remove_empty_lines
 def render_table_bare(lines: list[str]) -> str:
     table_html = _render_table_html(lines)
-    return (
-        f"<figure>"
-        f"{table_html}"
-        f"</figure>"
-    )
+    return f"<figure>" f"{table_html}" f"</figure>"
 
 
 @strip_lines
@@ -139,20 +139,28 @@ def render_pagebreak(_lines: list[str]) -> str:
 @strip_lines
 @remove_empty_lines
 def render_math(lines: list[str]) -> str:
-    return f"<div class='math-block' data-latex='{formattedText(" ".join(lines))}'></div>"
+    return (
+        f"<div class='math-block' data-latex='{formattedText(" ".join(lines))}'></div>"
+    )
 
 
 def render_code(lines: list[str]) -> str:
     language = lines[0].strip()
     innerHTML = "\n".join([formattedText(i) for i in lines[1:]])
     return f"<pre><code class='language-{language}'>{innerHTML}</code></pre>"
-        
+
 
 @strip_lines
 @remove_empty_lines
 def render_ul(lines: list[str]) -> str:
     return f"<ul>{"".join([f"<li>{i}</li>" for i in lines])}</ul>"
 
+def render_checklist(lines: list[str]) -> str:
+    items = "".join(
+        f'<li><input type="checkbox" disabled {"checked" if int(line[0]) else ""}>{line[1:]}</li>'
+        for line in lines
+    )
+    return f'<ul class="checklist">{items}</ul>'
 
 RENDERERS = {
     "intro": render_intro,
@@ -166,11 +174,12 @@ RENDERERS = {
     "page-break": render_pagebreak,
     "math": render_math,
     "code": render_code,
+    "checklist": render_checklist,
 }
 
 
 def formattedText(text: str) -> str:
-    return html.escape(text);
+    return html.escape(text)
 
 
 def render_engram(blocks: list[Block]) -> str:
