@@ -166,7 +166,7 @@ def render_checklist(lines: list[str]) -> str:
     return f'<ul class="checklist">{items}</ul>'
 
 def render_plain(lines: list[str]) -> str:
-    return f"<pre>{formattedText("\n".join(lines))}</pre>"
+    return f'<div class="plain-text">{formattedText("\n".join(lines))}</div>'
 
 RENDERERS = {
     "intro": render_intro,
