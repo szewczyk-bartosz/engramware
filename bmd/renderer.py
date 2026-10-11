@@ -165,12 +165,16 @@ def render_checklist(lines: list[str]) -> str:
     )
     return f'<ul class="checklist">{items}</ul>'
 
+def render_plain(lines: list[str]) -> str:
+    return f"<pre>{"\n".join(lines)}</pre>"
+
 RENDERERS = {
     "intro": render_intro,
     "toc": render_toc,
     "ul": render_ul,
     "header": render_header,
     "p": render_p,
+    "plain": render_plain,
     "table": render_table,
     "table_bare": render_table_bare,
     "img": render_img,
