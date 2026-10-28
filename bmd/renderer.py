@@ -2,7 +2,7 @@ from pathlib import Path
 import html
 from bmd.parser import Block
 
-_HEADER_PATH = Path(__file__).parent.parent / "header.html"
+_HEADER_PATH = Path(__file__).parent / "header.html"
 
 import functools
 
