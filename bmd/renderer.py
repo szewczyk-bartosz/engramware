@@ -35,7 +35,7 @@ def render_toc(lines: list[str]) -> str:
         output += "<div class='toc'>"
         output += f"<span class='toc-title'>{formattedText(title)}</span>\n"
         output += f"<span class='toc-dots'></span>\n"
-        output += f"<span class='toc-page'>{page}</span>"
+        output += f"<span class='toc-page'>{formattedText(page)}</span>"
         output += "</div>"
     output += "</div>"
     return output
@@ -56,7 +56,7 @@ def render_p(lines: list[str]) -> str:
 @strip_lines
 @remove_empty_lines
 def render_intro(lines: list[str]) -> str:
-    title = lines[0]
+    title = formattedText(lines[0])
     return f"<h1>{title}</h1>"
     meta = "".join(f"<div class='meta'>{line}</div>" for line in lines[1:] if line)
     return f"<div class='title-page'><h1>{title}</h1>{meta}</div>"
@@ -153,14 +153,14 @@ def render_code(lines: list[str]) -> str:
 @strip_lines
 @remove_empty_lines
 def render_ul(lines: list[str]) -> str:
-    return f"<ul>{"".join([f"<li>{i}</li>" for i in lines])}</ul>"
+    return f"<ul>{"".join([f"<li>{formattedText(i)}</li>" for i in lines])}</ul>"
 
 
 @strip_lines
 @remove_empty_lines
 def render_checklist(lines: list[str]) -> str:
     items = "".join(
-        f'<li><input type="checkbox" disabled {"checked" if int(line[0]) else ""}>{line[1:]}</li>'
+        f'<li><input type="checkbox" disabled {"checked" if int(line[0]) else ""}>{formattedText(line[1:])}</li>'
         for line in lines
     )
     return f'<ul class="checklist">{items}</ul>'
