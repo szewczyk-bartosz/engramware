@@ -1,4 +1,5 @@
 import argparse
+import sys
 
 import bmd.parser
 import bmd.pipeline
@@ -13,18 +14,18 @@ def main():
     parser.add_argument("--engram", action="store_true", help="engram mode")
     args = parser.parse_args()
 
-    if args.check:
-        bmd.pipeline.verify(args.check)
-        return
-
-    if not args.o:
+    if args.i and not args.o:
         parser.error("-o is required when using -i")
 
-    if args.engram:
-        bmd.pipeline.compile_engram(args.i, args.o)
-        return
-
-    bmd.pipeline.compile(args.i, args.o)
+    try:
+        if args.check:
+            bmd.pipeline.verify(args.check)
+        elif args.engram:
+            bmd.pipeline.compile_engram(args.i, args.o)
+        else:
+            bmd.pipeline.compile(args.i, args.o)
+    except bmd.pipeline.BMDError as e:
+        sys.exit(f"error: {e}")
 
 
 if __name__ == "__main__":
