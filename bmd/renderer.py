@@ -145,6 +145,8 @@ def render_math(lines: list[str]) -> str:
 
 
 def render_code(lines: list[str]) -> str:
+    if not lines:
+        raise ValueError("code block requires at least one line (the language)")
     language = lines[0].strip()
     innerHTML = "\n".join([formattedText(i) for i in lines[1:]])
     return f"<pre><code class='language-{language}'>{innerHTML}</code></pre>"
@@ -159,8 +161,11 @@ def render_ul(lines: list[str]) -> str:
 @strip_lines
 @remove_empty_lines
 def render_checklist(lines: list[str]) -> str:
+    for line in lines:
+        if line[0] not in "01":
+            raise ValueError(f"checklist line must start with 0 or 1: {line!r}")
     items = "".join(
-        f'<li><input type="checkbox" disabled {"checked" if int(line[0]) else ""}>{formattedText(line[1:])}</li>'
+        f'<li><input type="checkbox" disabled {"checked" if line[0] == "1" else ""}>{formattedText(line[1:])}</li>'
         for line in lines
     )
     return f'<ul class="checklist">{items}</ul>'
